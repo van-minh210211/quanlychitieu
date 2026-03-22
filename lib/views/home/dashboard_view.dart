@@ -1,5 +1,6 @@
 import 'package:expense_management/controllers/home_controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -44,13 +45,45 @@ class DashboardView extends StatelessWidget {
                   itemCount: controller.transactions.length > 5 ? 5 : controller.transactions.length,
                   itemBuilder: (context, index) {
                     final item = controller.transactions[index];
-                    return _buildTransactionItem(
-                      item.icon,
-                      item.title,
-                      item.date,
-                      "${item.isExpense ? '-' : '+'}${currencyFormat.format(item.amount)}đ",
-                      item.color,
-                      item.isExpense,
+                    
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Slidable(
+                        key: Key(item.id.toString()),
+                        // Phần hành động hiện ra khi vuốt (từ phải sang trái)
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          extentRatio: 0.25, // Độ rộng của nút xóa
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) {
+                                // Chỉ xóa khi người dùng nhấn vào nút này
+                                controller.deleteTransaction(index);
+                                Get.snackbar(
+                                  "Thông báo", 
+                                  "Đã xóa giao dịch",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.redAccent.withOpacity(0.8),
+                                  colorText: Colors.white,
+                                  duration: const Duration(seconds: 1),
+                                );
+                              },
+                              backgroundColor: Colors.redAccent,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ],
+                        ),
+                        child: _buildTransactionItem(
+                          item.icon,
+                          item.title,
+                          item.date,
+                          "${item.isExpense ? '-' : '+'}${currencyFormat.format(item.amount)}đ",
+                          item.color,
+                          item.isExpense,
+                        ),
+                      ),
                     );
                   },
                 );
@@ -107,7 +140,7 @@ class DashboardView extends StatelessWidget {
 
   Widget _buildTransactionItem(IconData icon, String title, String date, String amount, Color iconColor, bool isExpense) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.zero, // Để Slidable quản lý margin thông qua Padding bên ngoài
       elevation: 0,
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
