@@ -4,6 +4,7 @@ class TransactionModel {
   String id;
   String title;
   String note;
+  String imgae;
   double amount;
   bool isExpense;
   int iconCode;
@@ -14,6 +15,7 @@ class TransactionModel {
     required this.id,
     required this.title,
     required this.note,
+    required this.imgae,
     required this.amount,
     required this.isExpense,
     required this.iconCode,
@@ -26,6 +28,7 @@ class TransactionModel {
         'id': id,
         'title': title,
         'note': note,
+        'imgae': imgae,
         'amount': amount,
         'isExpense': isExpense,
         'iconCode': iconCode,
@@ -38,6 +41,7 @@ class TransactionModel {
         id: json['id'],
         title: json['title'],
         note: json['note'],
+        imgae: json['imgae'],
         amount: json['amount'],
         isExpense: json['isExpense'],
         iconCode: json['iconCode'],

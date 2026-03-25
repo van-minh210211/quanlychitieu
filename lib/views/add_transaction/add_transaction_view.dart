@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:expense_management/controllers/add_transaction_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -74,15 +75,60 @@ class AddTransactionView extends StatelessWidget {
               ),
             )),
             const Divider(height: 32, thickness: 1),
+            
+            // NÚT CHỤP ẢNH (CHỈ HIỆN KHI LÀ KHOẢN CHI)
+            Obx(() {
+              if (controller.isExpense.value) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Hình ảnh minh chứng", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: () => controller.takePhoto(),
+                      child: Container(
+                        width: double.infinity,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey[300]!, width: 1),
+                        ),
+                        child: controller.imagePath.value.isEmpty
+                            ? const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.camera_alt_outlined, size: 40, color: Colors.grey),
+                                  SizedBox(height: 8),
+                                  Text("Chụp ảnh hóa đơn", style: TextStyle(color: Colors.grey)),
+                                ],
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Image.file(
+                                  File(controller.imagePath.value),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                );
+              }
+              return const SizedBox();
+            }),
+
             const Text("Danh mục", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             SizedBox(
               height: 100,
-              child: ListView.builder(
+              // SỬA LỖI Ở ĐÂY: Thêm Obx bao quanh ListView và dùng controller.currentList
+              child: Obx(() => ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.categories.length,
+                itemCount: controller.currentList.length,
                 itemBuilder: (context, index) {
-                  final cat = controller.categories[index];
+                  final cat = controller.currentList[index];
                   return Obx(() {
                     bool isSelected = controller.selectedCategory.value == cat['name'];
                     return GestureDetector(
@@ -107,7 +153,7 @@ class AddTransactionView extends StatelessWidget {
                     );
                   });
                 },
-              ),
+              )),
             ),
             const SizedBox(height: 32),
             const Text("Ghi chú", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -133,7 +179,9 @@ class AddTransactionView extends StatelessWidget {
                   backgroundColor: controller.isExpense.value ? Colors.redAccent : Colors.green,
                   foregroundColor: Colors.white,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 child: const Text("LƯU GIAO DỊCH", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               )),

@@ -1,4 +1,5 @@
 import 'package:expense_management/controllers/home_controllers.dart';
+import 'package:expense_management/views/home/transaction_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -50,23 +51,14 @@ class DashboardView extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: Slidable(
                         key: Key(item.id.toString()),
-                        // Phần hành động hiện ra khi vuốt (từ phải sang trái)
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),
-                          extentRatio: 0.25, // Độ rộng của nút xóa
+                          extentRatio: 0.25,
                           children: [
                             SlidableAction(
                               onPressed: (context) {
-                                // Chỉ xóa khi người dùng nhấn vào nút này
                                 controller.deleteTransaction(index);
-                                Get.snackbar(
-                                  "Thông báo", 
-                                  "Đã xóa giao dịch",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.redAccent.withOpacity(0.8),
-                                  colorText: Colors.white,
-                                  duration: const Duration(seconds: 1),
-                                );
+                                Get.snackbar("Thông báo", "Đã xóa giao dịch", snackPosition: SnackPosition.BOTTOM);
                               },
                               backgroundColor: Colors.redAccent,
                               foregroundColor: Colors.white,
@@ -75,13 +67,16 @@ class DashboardView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: _buildTransactionItem(
-                          item.icon,
-                          item.title,
-                          item.date,
-                          "${item.isExpense ? '-' : '+'}${currencyFormat.format(item.amount)}đ",
-                          item.color,
-                          item.isExpense,
+                        child: GestureDetector(
+                          onTap: () => Get.to(() => TransactionDetailView(transaction: item)),
+                          child: _buildTransactionItem(
+                            item.icon,
+                            item.title,
+                            item.date,
+                            "${item.isExpense ? '-' : '+'}${currencyFormat.format(item.amount)}đ",
+                            item.color,
+                            item.isExpense,
+                          ),
                         ),
                       ),
                     );
@@ -140,7 +135,7 @@ class DashboardView extends StatelessWidget {
 
   Widget _buildTransactionItem(IconData icon, String title, String date, String amount, Color iconColor, bool isExpense) {
     return Card(
-      margin: EdgeInsets.zero, // Để Slidable quản lý margin thông qua Padding bên ngoài
+      margin: EdgeInsets.zero,
       elevation: 0,
       color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
