@@ -12,13 +12,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeControllers controller = Get.put(HomeControllers());
-
     final List<Widget> _pages = [
       const DashboardView(),
       const HistoryView(),
       const StatisticalView(),
     ];
-
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
       bottomNavigationBar: Obx(() => BottomNavigationBar(

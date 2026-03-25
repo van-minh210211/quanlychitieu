@@ -22,7 +22,7 @@ class AddTransactionController extends GetxController {
     {"name": "Di chuyển", "icon": Icons.directions_car, "color": Colors.blue},
     {"name": "Mua sắm", "icon": Icons.shopping_bag, "color": Colors.pink},
     {"name": "Giải trí", "icon": Icons.movie, "color": Colors.purple},
-    {"name": "Khác", "icon": Icons.more_horiz, "color": Colors.grey},
+
   ];
 
   // Danh mục cho Khoản thu
@@ -30,15 +30,14 @@ class AddTransactionController extends GetxController {
     {"name": "Lương", "icon": Icons.payments, "color": Colors.green},
     {"name": "Affiliate", "icon": Icons.monetization_on, "color": Colors.amber},
     {"name": "Thưởng", "icon": Icons.card_giftcard, "color": Colors.redAccent},
-    {"name": "Khác", "icon": Icons.more_horiz, "color": Colors.grey},
+
   ];
 
-  // Hàm lấy danh sách đang hoạt động
+
   List<Map<String, dynamic>> get currentList => isExpense.value ? categories : categories2;
 
   void changeType(bool value) {
     isExpense.value = value;
-    // Khi đổi tab, đặt lại danh mục được chọn là mục đầu tiên của danh sách đó
     selectedCategory.value = currentList[0]['name'];
     
     if (!value) imagePath.value = ""; 
@@ -61,8 +60,7 @@ class AddTransactionController extends GetxController {
     }
 
     double amountValue = double.parse(amountController.text.replaceAll('.', ''));
-    
-    // Tìm thông tin danh mục từ danh sách đang dùng
+
     var categoryData = currentList.firstWhere((cat) => cat['name'] == selectedCategory.value);
 
     TransactionModel newTransaction = TransactionModel(

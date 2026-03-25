@@ -23,7 +23,6 @@ class TransactionModel {
     required this.date,
   });
 
-  // Chuyển Object thành Map để lưu vào máy (Json)
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
@@ -36,7 +35,7 @@ class TransactionModel {
         'date': date,
       };
 
-  // Chuyển Map từ máy thành Object để dùng trong code
+
   factory TransactionModel.fromJson(Map<String, dynamic> json) => TransactionModel(
         id: json['id'],
         title: json['title'],
@@ -49,7 +48,6 @@ class TransactionModel {
         date: json['date'],
       );
 
-  // Hàm tiện ích lấy IconData và Color thật từ mã số
   IconData get icon => IconData(iconCode, fontFamily: 'MaterialIcons');
   Color get color => Color(colorValue);
 }

@@ -32,7 +32,6 @@ class TransactionDetailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Icon và Tiền
             Center(
               child: Column(
                 children: [
@@ -61,27 +60,23 @@ class TransactionDetailView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 40),
-
-            // Thông tin chi tiết
+             SizedBox(height: 40),
             _buildDetailRow("Ngày thực hiện", transaction.date),
-            const Divider(height: 32),
+             Divider(height: 32),
             _buildDetailRow("Loại giao dịch", transaction.isExpense ? "Khoản chi" : "Khoản thu"),
-            const Divider(height: 32),
+             Divider(height: 32),
             
-            // Ghi chú
-            const Text(
+
+             Text(
               "Ghi chú",
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            const SizedBox(height: 8),
+             SizedBox(height: 8),
             Text(
               transaction.note.isEmpty ? "Không có ghi chú" : transaction.note,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-            const SizedBox(height: 32),
-
-            // Hình ảnh minh chứng (chỉ hiện nếu có)
+             SizedBox(height: 32),
             if (transaction.imgae.isNotEmpty) ...[
               const Text(
                 "Hình ảnh minh chứng",

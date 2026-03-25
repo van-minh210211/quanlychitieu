@@ -75,8 +75,6 @@ class AddTransactionView extends StatelessWidget {
               ),
             )),
             const Divider(height: 32, thickness: 1),
-            
-            // NÚT CHỤP ẢNH (CHỈ HIỆN KHI LÀ KHOẢN CHI)
             Obx(() {
               if (controller.isExpense.value) {
                 return Column(
@@ -119,11 +117,10 @@ class AddTransactionView extends StatelessWidget {
               return const SizedBox();
             }),
 
-            const Text("Danh mục", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
+             Text("Danh mục", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+             SizedBox(height: 16),
             SizedBox(
               height: 100,
-              // SỬA LỖI Ở ĐÂY: Thêm Obx bao quanh ListView và dùng controller.currentList
               child: Obx(() => ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: controller.currentList.length,
